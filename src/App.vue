@@ -162,6 +162,7 @@ onMounted(() => {
         rules: [
           value => {
             if (value) return true;
+            this.label = "Calculator";
             return "Input something!";
           },
           () => {

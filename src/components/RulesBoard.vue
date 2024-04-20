@@ -55,7 +55,7 @@ export default  {
         "The answer must be less than or equal to -12",
         "The input must contain the number",
         "",
-        "The input must include the current 2-digit minute"
+        "The input must include the current minute"
       ],
       clickable: [
         false,

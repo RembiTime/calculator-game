@@ -262,7 +262,7 @@ onMounted(() => {
             }
             const date = new Date();
             console.log(date.getMinutes().toString().padStart(2, '0'))
-            if (this.input.includes(date.getMinutes().toString().padStart(2, '0'))) {
+            if (this.input.includes(date.getMinutes())) {
               return true;
             }
             return "Well, would you look at the time!"

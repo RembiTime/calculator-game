@@ -62,12 +62,14 @@ export default  {
         "Each operator must be used at least once",
         "The answer must be a whole number",
         "The answer must be a multiple of 3",
-        "The answer can't have any zeros",
+        "The input must not include any zeros",
         "The answer must be less than or equal to -12",
         "The input must contain the number",
         "",
         "The input must include the current minute",
+        "No canceling out addition with subtraction",
         "No canceling out multiplication with division",
+        "No division should result in 1 (Ex: 24/24)",
         "The input must not contain the number"
       ],
       clickable: [

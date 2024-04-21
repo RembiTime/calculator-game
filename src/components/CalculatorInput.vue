@@ -257,7 +257,7 @@ onMounted(() => {
             if (this.wordleLetter % 10 === 0) {
               wordle += 1;
             }
-            if (this.input.replaceAll(/\(\)/g, "").includes("/" + wordle)) {
+            if (this.input.replaceAll(/[()]/g, "").includes("/" + wordle)) {
               return true;
             }
             return "Go play Wordle!"
@@ -278,14 +278,34 @@ onMounted(() => {
               this.furthestRule = 11;
               this.updateRuleBoard(value);
             }
-            if (this.input.replaceAll(/\(\)/g, "").match(/\*(\d*)\/\1(\D|$)|\/(\d*)\*\3(\D|$)/) === null) {
+            if (this.input.replaceAll(/[()]/g, "").match(/\+(\d*)-\1(\D|$)|-(\d*)\+\3(\D|$)/) === null) {
               return true;
             }
-            return "No cheating with canceling out multiplication!"
+            return "No cheating with canceling out addition with subtraction!"
           },
           value => {
             if (this.furthestRule < 12) {
               this.furthestRule = 12;
+              this.updateRuleBoard(value);
+            }
+            if (this.input.replaceAll(/[()]/g, "").match(/\*(\d*)\/\1(\D|$)|\/(\d*)\*\3(\D|$)/) === null) {
+              return true;
+            }
+            return "No cheating with canceling out multiplication with division!"
+          },
+          value => {
+            if (this.furthestRule < 13) {
+              this.furthestRule = 13;
+              this.updateRuleBoard(value);
+            }
+            if (this.input.replaceAll(/[()]/g, "").match(/(\D|^)(\d*)\/\2(\D|$)/) === null) {
+              return true;
+            }
+            return "No cheating with making division equal to 1!"
+          },
+          value => {
+            if (this.furthestRule < 14) {
+              this.furthestRule = 14;
               this.updateRuleBoard(value);
             }
             if (this.bannedKey === "") {

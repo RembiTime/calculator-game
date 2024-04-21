@@ -23,7 +23,17 @@
               <FontAwesomeIcon :icon="faArrowsRotate" />
             </span>
             <span v-if="validRules.length-index-1==8" class="text-center">
-              The input must be divided by the letters in<br />in today's Wordle added in A1-Z26 format
+              The input must be divided by the sum of the letters<br />in today's Wordle in A1-Z26 format (1 number)
+            </span>
+            <span v-if="validRules.length-index-1==11" class="text-center" style="margin-left: 5px;">
+              <v-select
+                :items="['1', '2', '3', '4', '5', '6', '7', '8', '9']"
+                variant="outlined"
+                density="compact"
+                style="width:65px;"
+                hide-details="auto"
+                v-model="keyToBan"
+              ></v-select>
             </span>
           </v-chip>
         </TransitionGroup>
@@ -41,7 +51,8 @@ import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
 export default  {
   props: {
     validRules: Array,
-    randomNum: String
+    randomNum: String,
+    bannedKey: String
   },
   data() {
     return {
@@ -55,7 +66,9 @@ export default  {
         "The answer must be less than or equal to -12",
         "The input must contain the number",
         "",
-        "The input must include the current minute"
+        "The input must include the current minute",
+        "No canceling out multiplication with division",
+        "The input must not contain the number"
       ],
       clickable: [
         false,
@@ -65,9 +78,13 @@ export default  {
         false,
         false,
         false,
-        "click"
+        "click",
+        false,
+        false,
+        false,
+        false
       ],
-      tester: "click"
+      keyToBan: ""
     }
   },
   methods: {
@@ -75,6 +92,11 @@ export default  {
       if (index == 7) {
         this.$emit("updateRandomNum")
       }
+    }
+  },
+  watch: {
+    keyToBan(val) {
+      this.$emit("updateBannedKey", val)
     }
   }
 }
@@ -95,4 +117,13 @@ export default  {
   height: auto !important;
   padding: 5px 12px;
 }
+
+.v-field.v-field--appended {
+  --v-field-padding-end: 0px !important;
+}
+
+/* .v-input.v-select {
+  --v-input-control-height:0px !important;
+  --v-input-padding-top:0px !important;
+} */
 </style>

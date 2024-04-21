@@ -148,7 +148,8 @@ onMounted(() => {
     props: {
       validRules: Array,
       randomNum: String,
-      wordleLetter: Number
+      wordleLetter: Number,
+      bannedKey: String
     },
     data() {
       return {
@@ -164,7 +165,6 @@ onMounted(() => {
           },
           (value) => {
             if (this.furthestRule < 2) {
-              this.$emit("initializeVariables")
               this.furthestRule = 2;
               this.updateRuleBoard(value);
             }
@@ -249,8 +249,15 @@ onMounted(() => {
             if (this.furthestRule < 9) {
               this.furthestRule = 9;
               this.updateRuleBoard(value);
+              if (this.wordleLetter % 10 === 0) {
+                this.$toast.info("Today's Wordle sum ends in a 0, so just add 1 to it so that it doesn't include a 0.", {duration: 0, position: "top"})
+              }
             }
-            if (this.input.includes("/" + this.wordleLetter)) {
+            let wordle = this.wordleLetter
+            if (this.wordleLetter % 10 === 0) {
+              wordle += 1;
+            }
+            if (this.input.replaceAll(/\(\)/g, "").includes("/" + wordle)) {
               return true;
             }
             return "Go play Wordle!"
@@ -261,11 +268,33 @@ onMounted(() => {
               this.updateRuleBoard(value);
             }
             const date = new Date();
-            console.log(date.getMinutes().toString().padStart(2, '0'))
             if (this.input.includes(date.getMinutes())) {
               return true;
             }
             return "Well, would you look at the time!"
+          },
+          value => {
+            if (this.furthestRule < 11) {
+              this.furthestRule = 11;
+              this.updateRuleBoard(value);
+            }
+            if (this.input.replaceAll(/\(\)/g, "").match(/\*(\d*)\/\1(\D|$)|\/(\d*)\*\3(\D|$)/) === null) {
+              return true;
+            }
+            return "No cheating with canceling out multiplication!"
+          },
+          value => {
+            if (this.furthestRule < 12) {
+              this.furthestRule = 12;
+              this.updateRuleBoard(value);
+            }
+            if (this.bannedKey === "") {
+              return "You have to choose a key to ban, my friend"
+            }
+            if (this.input.includes(this.bannedKey)) {
+              return "Hey, *you* banned " + this.bannedKey + "!"
+            }
+            return true;
           }
         ]
       }

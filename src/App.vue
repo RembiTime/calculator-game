@@ -4,15 +4,15 @@
       <h1 class="text-center ma-6">The Calculator Game</h1>
       <v-container style="max-width: 900px;">
         <v-row>
-          <v-col-6>
-          <CalculatorInput :validRules="validRules" :randomNum="randomNum" :wordleLetter="wordleLetter" @updateValidRules="updateValidRules" @initializeVariables="initializeVariables"/>
-          </v-col-6>
-          <v-col-6 v-if="!screenSmall">
-            <RulesBoard :validRules="validRules" :randomNum="randomNum" @updateRandomNum="updateRandomNum"/>
-          </v-col-6>
+          <v-col cols="6">
+          <CalculatorInput :validRules="validRules" :randomNum="randomNum" :wordleLetter="wordleLetter" :banned-key="bannedKey" @updateValidRules="updateValidRules"/>
+          </v-col>
+          <v-col cols="6" v-if="!screenSmall">
+            <RulesBoard :validRules="validRules" :randomNum="randomNum" :banned-key="bannedKey" @updateRandomNum="updateRandomNum" @updateBannedKey="updateBannedKey"/>
+          </v-col>
         </v-row>
         <v-row v-if="screenSmall">
-          <RulesBoard :validRules="validRules" :randomNum="randomNum" @updateRandomNum="updateRandomNum"/>
+          <RulesBoard :validRules="validRules" :randomNum="randomNum" :banned-key="bannedKey" @updateRandomNum="updateRandomNum" @updateBannedKey="updateBannedKey"/>
         </v-row>
       </v-container>
     </v-main>
@@ -27,21 +27,21 @@ import axios from 'axios';
 
 <script>
   export default {
+    mounted() {
+      this.updateRandomNum();
+      this.getTodaysWordle();
+    },
     data() {
       return {
         validRules: [false],
         randomNum: "9999999999",
         wordleLetter: 9999999999,
-
+        bannedKey: ""
       }
     },
     methods: {
       updateValidRules(arr) {
         this.validRules = arr;
-      },
-      initializeVariables() {
-        this.updateRandomNum();
-        this.getTodaysWordle();
       },
       updateRandomNum() {
         do {
@@ -53,11 +53,19 @@ import axios from 'axios';
       getTodaysWordle() {
         this.wordleLetter = 0;
         const date = new Date();
-        axios.get('https://www.nytimes.com/svc/wordle/v2/' + date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) + '.json').then(response => {
-          for (let i = 0; i < 5; i++) {
-            this.wordleLetter += response.data.solution.charCodeAt(i) - 96;
-          }
-        })
+        axios.get('https://www.nytimes.com/svc/wordle/v2/' + date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) + '.json')
+          .then(response => {
+            for (let i = 0; i < 5; i++) {
+              this.wordleLetter += response.data.solution.charCodeAt(i) - 96;
+            }
+          })
+          .catch((error) => {
+            this.$toast.error("Error fetching from API! Please refresh your page.", {duration: 0, dismissible: false, position: "top"})
+            console.error(error);
+          })
+      },
+      updateBannedKey(val) {
+        this.bannedKey = val;
       }
     },
     computed: {

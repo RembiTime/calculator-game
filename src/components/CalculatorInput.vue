@@ -10,8 +10,10 @@
           variant="outlined"
           :rules="rules"
           ref="answer"
+          class="calcInput"
           v-model="input"
           @keydown="nameKeydown($event)"
+          @click.right.prevent
           ></v-text-field>
       </v-card-title>
       <v-card-text class="bg-surface-light pt-4">
@@ -40,17 +42,17 @@
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="sevenBtn" @click="inputCharacter('7')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="sevenBtn" @click="inputCharacter('7')" @mousedown.prevent :disabled="bannedKey==='7'">
                 7
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="eightBtn" @click="inputCharacter('8')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="eightBtn" @click="inputCharacter('8')" @mousedown.prevent :disabled="bannedKey==='8'">
                 8
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="nineBtn" @click="inputCharacter('9')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="nineBtn" @click="inputCharacter('9')" @mousedown.prevent :disabled="bannedKey==='9'">
                 9
               </v-btn>
             </v-col>
@@ -62,17 +64,17 @@
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="fourBtn" @click="inputCharacter('4')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="fourBtn" @click="inputCharacter('4')" @mousedown.prevent :disabled="bannedKey==='4'">
                 4
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="fiveBtn" @click="inputCharacter('5')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="fiveBtn" @click="inputCharacter('5')" @mousedown.prevent :disabled="bannedKey==='5'">
                 5
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="sixBtn" @click="inputCharacter('6')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="sixBtn" @click="inputCharacter('6')" @mousedown.prevent :disabled="bannedKey==='6'">
                 6
               </v-btn>
             </v-col>
@@ -84,17 +86,17 @@
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="threeBtn" @click="inputCharacter('1')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="threeBtn" @click="inputCharacter('1')" @mousedown.prevent :disabled="bannedKey==='1'">
                 1
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="twoBtn" @click="inputCharacter('2')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="twoBtn" @click="inputCharacter('2')" @mousedown.prevent :disabled="bannedKey==='2'">
                 2
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="oneBtn" @click="inputCharacter('3')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="oneBtn" @click="inputCharacter('3')" @mousedown.prevent :disabled="bannedKey==='3'">
                 3
               </v-btn>
             </v-col>
@@ -106,7 +108,7 @@
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="zeroBtn" @click="inputCharacter('0')" @mousedown.prevent>
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="zeroBtn" @click="inputCharacter('0')" @mousedown.prevent :disabled="furthestRule >= 6">
                 0
               </v-btn>
             </v-col>
@@ -134,9 +136,17 @@
 
 <script>
 import { CronJob } from 'cron';
+import { detect } from 'detect-browser';
 
   export default {
     mounted() {
+      const browser = detect();
+      if (browser) {
+        this.browserVersion = browser.version.split('.')[0];
+      } else {
+        this.$toast.error("There was an error detecting which browser this is. What kind of obscure browser are you using?", {duration: 0, dismissible: false, position: "top"})
+      }
+
       this.$refs.answer.validate();
 
       this.timer = new CronJob('* * * * *', () =>  {
@@ -271,7 +281,7 @@ import { CronJob } from 'cron';
               this.updateRuleBoard(value);
             }
             const date = new Date();
-            if (this.input.match(new RegExp("(\\D|^)" + date.getMinutes() + "(\\D|$)"))) {
+            if (this.input.match(new RegExp("(\\D|^)" + date.getMinutes() + "(\\D|$)")) === null) {
               return true;
             }
             return "Well, would you look at the time!"
@@ -284,7 +294,7 @@ import { CronJob } from 'cron';
             if (this.input.replaceAll(/[()]/g, "").match(/\+(\d*)-\1(\D|$)|-(\d*)\+\3(\D|$)/) === null) {
               return true;
             }
-            return "No cheating with canceling out addition with subtraction!"
+            return "No cheating by canceling out addition with subtraction!"
           },
           value => {
             if (this.furthestRule < 12) {
@@ -294,21 +304,31 @@ import { CronJob } from 'cron';
             if (this.input.replaceAll(/[()]/g, "").match(/\*(\d*)\/\1(\D|$)|\/(\d*)\*\3(\D|$)/) === null) {
               return true;
             }
-            return "No cheating with canceling out multiplication with division!"
+            return "No cheating by canceling out multiplication with division!"
           },
           value => {
             if (this.furthestRule < 13) {
               this.furthestRule = 13;
               this.updateRuleBoard(value);
             }
-            if (this.input.replaceAll(/[()]/g, "").match(/(\D|^)(\d*)\/\2(\D|$)/) === null) {
+            if (this.input.replaceAll(/[()]/g, "").match(/(\D|^)(\d*)-\2(\D|$)|-(\d*)\+\4(\D|$)|(\D|^)(\d*)\+-\7(\D|$)|(\D|^)(\d*)-\+\10(\D|$)/) === null) { // this regex could definitely be simplified...
               return true;
             }
-            return "No cheating with making division equal to 1!"
+            return "No cheating by using subtraction to make 0!"
           },
           value => {
             if (this.furthestRule < 14) {
               this.furthestRule = 14;
+              this.updateRuleBoard(value);
+            }
+            if (this.input.replaceAll(/[()]/g, "").match(/(\D|^)(\d*)\/\2(\D|$)/) === null) {
+              return true;
+            }
+            return "No cheating by making division equal to 1!"
+          },
+          value => {
+            if (this.furthestRule < 15) {
+              this.furthestRule = 15;
               this.updateRuleBoard(value);
             }
             if (this.bannedKey === "") {
@@ -318,11 +338,22 @@ import { CronJob } from 'cron';
               return "Hey, *you* banned " + this.bannedKey + "!"
             }
             return true;
+          },
+          value => {
+            if (this.furthestRule < 16) {
+              this.furthestRule = 16;
+              this.updateRuleBoard(value);
+            }
+            if (parseFloat(this.label) === parseFloat(this.browserVersion) * -3) {
+              return true;
+            }
+            return "You're so close!!"
           }
         ],
         timer: null,
         equalsIsActive: false,
-        shakeEquals: false
+        shakeEquals: false,
+        browserVersion: 9999999999
       }
     },
     methods: {
@@ -391,6 +422,8 @@ import { CronJob } from 'cron';
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
 .btnCol {
   padding: 5px !important;
   height: 50px !important;
@@ -425,6 +458,13 @@ import { CronJob } from 'cron';
 
 .apply-shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.calcInput {
+  font-family: "Inconsolata", monospace;
+}
+.v-input__details {
+  font-family: "Roboto", sans-serif;
 }
 </style>
 

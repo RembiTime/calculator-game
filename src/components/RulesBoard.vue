@@ -25,7 +25,7 @@
             <span v-if="validRules.length-index-1==8" class="text-center">
               The input must be divided by the sum of the letters<br />in today's Wordle in A1-Z26 format (1 number)
             </span>
-            <span v-if="validRules.length-index-1==13" class="text-center" style="margin-left: 5px;">
+            <span v-if="validRules.length-index-1==14" class="text-center" style="margin-left: 5px;">
               <v-select
                 :items="['1', '2', '3', '4', '5', '6', '7', '8', '9']"
                 variant="outlined"
@@ -34,6 +34,9 @@
                 hide-details="auto"
                 v-model="keyToBan"
               ></v-select>
+            </span>
+            <span v-if="validRules.length-index-1==15" class="text-center">
+              The answer must equal the first number of<br />your browser's version multiplied by -3
             </span>
           </v-chip>
         </TransitionGroup>
@@ -69,8 +72,10 @@ export default  {
         "The input must include the current minute",
         "No canceling out addition with subtraction",
         "No canceling out multiplication with division",
+        "No subtraction should result in 0 (Ex: 12-12)",
         "No division should result in 1 (Ex: 24/24)",
-        "The input must not contain the number"
+        "The input must not contain the number",
+        ""
       ],
       clickable: [
         false,

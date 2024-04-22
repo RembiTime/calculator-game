@@ -18,110 +18,110 @@
         <v-container class="bg-surface-variant">
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="clearBtn calcBtn" ref="clearBtn" @click="inputClear()">
+              <v-btn variant="outlined" class="clearBtn calcBtn" ref="clearBtn" @click="inputClear()" @mousedown.prevent>
                 AC
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="openBtn" @click="inputOperator('(')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="openBtn" @click="inputCharacter('(')" @mousedown.prevent>
                 (
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="closeBtn" @click="inputOperator(')')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="closeBtn" @click="inputCharacter(')')" @mousedown.prevent>
                 )
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="modBtn" @click="inputOperator('^')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="modBtn" @click="inputCharacter('^')" @mousedown.prevent>
                 ^
               </v-btn>
             </v-col>
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="sevenBtn" @click="inputNumber('7')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="sevenBtn" @click="inputCharacter('7')" @mousedown.prevent>
                 7
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="eightBtn" @click="inputNumber('8')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="eightBtn" @click="inputCharacter('8')" @mousedown.prevent>
                 8
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="nineBtn" @click="inputNumber('9')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="nineBtn" @click="inputCharacter('9')" @mousedown.prevent>
                 9
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="divBtn" @click="inputOperator('/')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="divBtn" @click="inputCharacter('/')" @mousedown.prevent>
                 /
               </v-btn>
             </v-col>
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="fourBtn" @click="inputNumber('4')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="fourBtn" @click="inputCharacter('4')" @mousedown.prevent>
                 4
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="fiveBtn" @click="inputNumber('5')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="fiveBtn" @click="inputCharacter('5')" @mousedown.prevent>
                 5
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="sixBtn" @click="inputNumber('6')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="sixBtn" @click="inputCharacter('6')" @mousedown.prevent>
                 6
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="multBtn" @click="inputOperator('*')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="multBtn" @click="inputCharacter('*')" @mousedown.prevent>
                 *
               </v-btn>
             </v-col>
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="threeBtn" @click="inputNumber('3')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="threeBtn" @click="inputCharacter('3')" @mousedown.prevent>
                 3
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="twoBtn" @click="inputNumber('2')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="twoBtn" @click="inputCharacter('2')" @mousedown.prevent>
                 2
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="oneBtn" @click="inputNumber('1')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="oneBtn" @click="inputCharacter('1')" @mousedown.prevent>
                 1
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="minBtn" @click="inputOperator('-')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="minBtn" @click="inputCharacter('-')" @mousedown.prevent>
                 -
               </v-btn>
             </v-col>
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="zeroBtn" @click="inputNumber('0')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="zeroBtn" @click="inputCharacter('0')" @mousedown.prevent>
                 0
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="dotBtn" @click="inputOperator('.')">
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="dotBtn" @click="inputCharacter('.')" @mousedown.prevent>
                 .
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="equalBtn calcBtn" ref="equalBtn" @click="inputEquals()">
+              <v-btn variant="outlined" :class="{'apply-shake': shakeEquals, 'equalBtnInactive': !equalsIsActive, 'equalBtnActive': equalsIsActive, 'calcBtn': true}" ref="equalBtn" @click="inputEquals()" @mousedown.prevent>
                 =
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="opBtn calcBtn" ref="plusBtn" @click="inputOperator('+')">
+              <v-btn variant="outlined" class="opBtn calcBtn" ref="plusBtn" @click="inputCharacter('+')" @mousedown.prevent>
                 +
               </v-btn>
             </v-col>
@@ -132,21 +132,23 @@
   </v-container>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-
-const answer = ref(null)
-
-onMounted(() => {
-  answer.value.validate();
-})
-
-</script>
-
 <script>
+import { CronJob } from 'cron';
+
   export default {
+    mounted() {
+      this.$refs.answer.validate();
+
+      this.timer = new CronJob('* * * * *', () =>  {
+        this.$refs.answer.validate();
+        this.updateRuleBoard(this.input);
+      })
+      this.timer.start();
+    },
+    beforeUnmount() {
+      this.timer.stop();
+    },
     props: {
-      validRules: Array,
       randomNum: String,
       wordleLetter: Number,
       bannedKey: String
@@ -157,6 +159,7 @@ onMounted(() => {
         instructions: "Enter something!",
         label: "Calculator",
         furthestRule: 1,
+        confetti: false,
         rules: [
           value => {
             if (value) return true;
@@ -268,7 +271,7 @@ onMounted(() => {
               this.updateRuleBoard(value);
             }
             const date = new Date();
-            if (this.input.includes(date.getMinutes())) {
+            if (this.input.includes(new RegExp("(\\D|^)" + date.getMinutes() + "(\\D|$)"))) {
               return true;
             }
             return "Well, would you look at the time!"
@@ -316,21 +319,35 @@ onMounted(() => {
             }
             return true;
           }
-        ]
+        ],
+        timer: null,
+        equalsIsActive: false,
+        shakeEquals: false
       }
     },
     methods: {
-      inputNumber(num) {
-        this.input = this.input.slice(0, this.getCursorLocation()) + num + this.input.slice(this.getCursorLocation());
-      },
-      inputOperator(op) {
-        this.input = this.input.slice(0, this.getCursorLocation()) + op + this.input.slice(this.getCursorLocation());
+      inputCharacter(char) {
+        let selectionStart = this.$refs.answer.selectionStart;
+        let selectionEnd = this.$refs.answer.selectionEnd;
+        this.input = this.input.slice(0, selectionStart) + char + this.input.slice(selectionEnd);
+        this.$nextTick(() => {
+          this.$refs.answer.selectionStart = selectionStart+1;
+          this.$refs.answer.selectionEnd = selectionStart+1;
+        })
       },
       inputClear() {
         this.input = "";
       },
       inputEquals() {
-
+        if (this.equalsIsActive) {
+          this.$toast.success("You win! Congratulations!!", {duration: 0, position: "top"})
+          this.$emit("explodeConfetti");
+        } else {
+          this.shakeEquals = true;
+          setTimeout(() => {
+            this.shakeEquals = false;
+          }, 1000)
+        }
       },
       nameKeydown(e) {
         if (!/[\d()^/*\-+=.]/.test(e.key) && e.key.slice(0, 5) != "Arrow" && e.key != "Enter" && e.key != "Backspace") {
@@ -338,12 +355,17 @@ onMounted(() => {
         }
       },
       getCursorLocation() {
-        return this.$refs.answer.selectionStart;
+        return this.$refs.answer.selectionEnd;
       },
       updateRuleBoard(val) {
         const rulesArr = [];
         for (let i = 0; i < this.furthestRule; i++) {
           rulesArr.push(this.rules[i](val) === true ? true : false);
+        }
+        if (rulesArr.every((rule) => rule) && rulesArr.length === this.rules.length) {
+          this.equalsIsActive = true;
+        } else {
+          this.equalsIsActive = false;
         }
         this.$emit("updateValidRules", rulesArr);
       }
@@ -353,7 +375,16 @@ onMounted(() => {
         this.updateRuleBoard(val === "Calculator" ? "" : val);
       },
       randomNum() {
-        this.$refs.answer.validate(this.rules);
+        this.$refs.answer.validate();
+        this.updateRuleBoard(this.input);
+      },
+      bannedKey() {
+        this.$refs.answer.validate();
+        this.updateRuleBoard(this.input);
+      },
+      wordleLetter() {
+        this.$refs.answer.validate();
+        this.updateRuleBoard(this.input);
       }
     }
   }
@@ -367,6 +398,33 @@ onMounted(() => {
 .calcBtn {
   width: 100% !important;
   height: 100% !important;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.apply-shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>
 

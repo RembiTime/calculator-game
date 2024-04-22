@@ -25,7 +25,7 @@
             <span v-if="validRules.length-index-1==8" class="text-center">
               The input must be divided by the sum of the letters<br />in today's Wordle in A1-Z26 format (1 number)
             </span>
-            <span v-if="validRules.length-index-1==11" class="text-center" style="margin-left: 5px;">
+            <span v-if="validRules.length-index-1==13" class="text-center" style="margin-left: 5px;">
               <v-select
                 :items="['1', '2', '3', '4', '5', '6', '7', '8', '9']"
                 variant="outlined"
@@ -81,6 +81,8 @@ export default  {
         false,
         false,
         "click",
+        false,
+        false,
         false,
         false,
         false,

@@ -2,10 +2,18 @@
   <v-app>
     <v-main>
       <h1 class="text-center ma-6">The Calculator Game</h1>
+      <ConfettiExplosion
+        v-if="confetti"
+        style="position:absolute; left:50%; right:0; top:50%; bottom:0;"
+        :stageHeight="2000"
+        :stageWidth="2000"
+        :force=".6"
+        :particleCount="300"
+      />
       <v-container style="max-width: 900px;">
         <v-row>
           <v-col cols="6">
-          <CalculatorInput :validRules="validRules" :randomNum="randomNum" :wordleLetter="wordleLetter" :banned-key="bannedKey" @updateValidRules="updateValidRules"/>
+          <CalculatorInput :randomNum="randomNum" :wordleLetter="wordleLetter" :banned-key="bannedKey" @updateValidRules="updateValidRules" @explodeConfetti="explodeConfetti"/>
           </v-col>
           <v-col cols="6" v-if="!screenSmall">
             <RulesBoard :validRules="validRules" :randomNum="randomNum" :banned-key="bannedKey" @updateRandomNum="updateRandomNum" @updateBannedKey="updateBannedKey"/>
@@ -23,20 +31,36 @@
 import CalculatorInput from './components/CalculatorInput.vue';
 import RulesBoard from './components/RulesBoard.vue';
 import axios from 'axios';
+import ConfettiExplosion from "vue-confetti-explosion";
 </script>
 
 <script>
+import { CronJob } from 'cron';
+
   export default {
     mounted() {
       this.updateRandomNum();
       this.getTodaysWordle();
+
+      this.timer = new CronJob('0 0 * * *', () =>  {
+          this.getTodaysWordle();
+        },
+        null,
+        true,
+        Intl.DateTimeFormat().resolvedOptions().timeZone
+      );
+    },
+    beforeUnmount() {
+      this.timer.stop();
     },
     data() {
       return {
         validRules: [false],
         randomNum: "9999999999",
         wordleLetter: 9999999999,
-        bannedKey: ""
+        bannedKey: "",
+        confetti: false,
+        timer: null
       }
     },
     methods: {
@@ -66,6 +90,12 @@ import axios from 'axios';
       },
       updateBannedKey(val) {
         this.bannedKey = val;
+      },
+      explodeConfetti() {
+        this.confetti = false;
+        this.$nextTick(() => {
+          this.confetti = true;
+        })
       }
     },
     computed: {
@@ -78,8 +108,11 @@ import axios from 'axios';
 </script>
 
 <style>
-  .equalBtn {
+  .equalBtnInactive {
     background-color: #7986CB !important;
+  }
+  .equalBtnActive {
+    background-color: #4CAF50 !important;
   }
   .clearBtn {
     background-color: #F44336 !important;

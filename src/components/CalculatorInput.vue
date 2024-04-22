@@ -282,9 +282,9 @@ import { detect } from 'detect-browser';
             }
             const date = new Date();
             if (this.input.match(new RegExp("(\\D|^)" + date.getMinutes() + "(\\D|$)")) === null) {
-              return true;
+              return "Well, would you look at the time!";
             }
-            return "Well, would you look at the time!"
+            return true
           },
           value => {
             if (this.furthestRule < 11) {
@@ -311,7 +311,7 @@ import { detect } from 'detect-browser';
               this.furthestRule = 13;
               this.updateRuleBoard(value);
             }
-            if (this.input.replaceAll(/[()]/g, "").match(/(\D|^)(\d*)-\2(\D|$)|-(\d*)\+\4(\D|$)|(\D|^)(\d*)\+-\7(\D|$)|(\D|^)(\d*)-\+\10(\D|$)/) === null) { // this regex could definitely be simplified...
+            if (this.input.replaceAll(/(\d+)\(/g, (match => {return match + "*"})).replaceAll(/\)(\d+)/g, (match => {return "*" + match})).replaceAll(/[()]/g, "").match(/(\D|^)(\d*)-\2(\D|$)|-(\d*)\+\4(\D|$)|(\D|^)(\d*)\+-\7(\D|$)|(\D|^)(\d*)-\+\10(\D|$)/) === null) { // this regex could definitely be simplified...
               return true;
             }
             return "No cheating by using subtraction to make 0!"
@@ -321,7 +321,7 @@ import { detect } from 'detect-browser';
               this.furthestRule = 14;
               this.updateRuleBoard(value);
             }
-            if (this.input.replaceAll(/[()]/g, "").match(/(\D|^)(\d*)\/\2(\D|$)/) === null) {
+            if (this.input.replaceAll(/(\d+)\(/g, (match => {return match + "*"})).replaceAll(/\)(\d+)/g, (match => {return "*" + match})).replaceAll(/[()]/g, "").match(/(\D|^)(\d*)\/\2(\D|$)/) === null) {
               return true;
             }
             return "No cheating by making division equal to 1!"
@@ -371,7 +371,7 @@ import { detect } from 'detect-browser';
       },
       inputEquals() {
         if (this.equalsIsActive) {
-          this.$toast.success("You win! Congratulations!!", {duration: 0, position: "top"})
+          this.$toast.success("You win! Congratulations!!", {position: "top"})
           this.$emit("explodeConfetti");
         } else {
           this.shakeEquals = true;

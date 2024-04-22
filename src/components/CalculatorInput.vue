@@ -84,8 +84,8 @@
           </v-row>
           <v-row>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="threeBtn" @click="inputCharacter('3')" @mousedown.prevent>
-                3
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="threeBtn" @click="inputCharacter('1')" @mousedown.prevent>
+                1
               </v-btn>
             </v-col>
             <v-col class="btnCol">
@@ -94,8 +94,8 @@
               </v-btn>
             </v-col>
             <v-col class="btnCol">
-              <v-btn variant="outlined" class="numBtn calcBtn" ref="oneBtn" @click="inputCharacter('1')" @mousedown.prevent>
-                1
+              <v-btn variant="outlined" class="numBtn calcBtn" ref="oneBtn" @click="inputCharacter('3')" @mousedown.prevent>
+                3
               </v-btn>
             </v-col>
             <v-col class="btnCol">
@@ -175,7 +175,7 @@ import { CronJob } from 'cron';
 
             let numOpenParenthesis = (moddedInput.match(/\(/g) || []).length;
             let numClosedParenthesis = (moddedInput.match(/\)/g) || []).length;
-            let parenthesisDiff = numOpenParenthesis - numClosedParenthesis
+            let parenthesisDiff = numOpenParenthesis - numClosedParenthesis;
             parenthesisDiff = parenthesisDiff > 0 ? parenthesisDiff : 0; // ensures non-negative
             moddedInput += ")".repeat(parenthesisDiff); // auto close parenthesis
 
@@ -271,7 +271,7 @@ import { CronJob } from 'cron';
               this.updateRuleBoard(value);
             }
             const date = new Date();
-            if (this.input.includes(new RegExp("(\\D|^)" + date.getMinutes() + "(\\D|$)"))) {
+            if (this.input.match(new RegExp("(\\D|^)" + date.getMinutes() + "(\\D|$)"))) {
               return true;
             }
             return "Well, would you look at the time!"

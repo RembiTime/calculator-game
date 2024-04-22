@@ -76,8 +76,8 @@ import { CronJob } from 'cron';
       },
       getTodaysWordle() {
         this.wordleLetter = 0;
-        const date = new Date();
-        axios.get('https://www.nytimes.com/svc/wordle/v2/' + date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) + '.json')
+        const date = new Date(new Date().toLocaleString("en-US", {timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone}));
+        axios.get('https://corsproxy.io/?https://www.nytimes.com/svc/wordle/v2/' + date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) + '.json')
           .then(response => {
             for (let i = 0; i < 5; i++) {
               this.wordleLetter += response.data.solution.charCodeAt(i) - 96;
